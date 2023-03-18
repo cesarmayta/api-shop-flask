@@ -7,6 +7,7 @@ class Producto(db.Model):
     nombre = db.Column(db.String(200),nullable=False)
     imagen = db.Column(db.String(254),default='https://ingoodcompany.asia/images/products_attr_img/matrix/default.png')
     precio = db.Column(db.Double,default=0)
+    activo = db.Column(db.String(1),default='1')
 
     def __init__(self,nombre):
         self.nombre = nombre
