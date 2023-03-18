@@ -43,4 +43,40 @@ class ProductoResource(Resource):
 
         return context
 
+    def put(self,id):
+        data = request.get_json()
+        nombre = data["nombre"]
+        precio = data["precio"]
+        imagen = data["imagen"]
+
+        objProducto = Producto.get_by_id(id)
+        objProducto.nombre = nombre
+        objProducto.precio = precio
+        objProducto.imagen = imagen
+        objProducto.save()
+
+        data_schema = ProductoSchema()
+
+        context = {
+            'status':True,
+            'content':data_schema.dump(objProducto)
+        }
+
+        return context
+
+    def delete(self,id):
+
+        objProducto = Producto.get_by_id(id)
+        objProducto.delete()
+
+        data_schema = ProductoSchema()
+
+        context = {
+            'status':True,
+            'content':data_schema.dump(objProducto)
+        }
+
+        return context
+
 api.add_resource(ProductoResource,'/producto')
+api.add_resource(ProductoResource,'/producto/<id>',endpoint='producto')
