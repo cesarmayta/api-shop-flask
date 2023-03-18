@@ -11,3 +11,4 @@ flask-cors
 #librerias
 mysqlclient
 python-dotenv
+marshmallow-sqlalchemy
