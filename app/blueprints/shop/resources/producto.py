@@ -1,5 +1,9 @@
-from flask_restful import Resource,Api
+from flask_restful import Resource,Api,reqparse
 from flask import request
+
+import os
+import werkzeug
+
 from .. import shop
 
 from ..models import Producto
@@ -8,6 +12,25 @@ from ..schemas import ProductoSchema
 
 api = Api(shop)
 
+class UploadImage(Resource):
+    
+    def post(self):
+        parse = reqparse.RequestParser()
+        parse.add_argument('file',type=werkzeug.datastructures.FileStorage,location='files')
+        args = parse.parse_args()
+        
+        image_file = args['file']
+        image_file.save(os.path.join(os.getcwd(),'app','static','uploads',image_file.filename))
+        
+        url_path = request.host_url +  "static/uploads/" + str(image_file.filename)
+        
+        context = {
+            "status":True,
+            "content":url_path
+        }
+        
+        return context
+    
 
 
 class ProductoResource(Resource):
@@ -80,3 +103,4 @@ class ProductoResource(Resource):
 
 api.add_resource(ProductoResource,'/producto')
 api.add_resource(ProductoResource,'/producto/<id>',endpoint='producto')
+api.add_resource(UploadImage,'/uploadimage')
