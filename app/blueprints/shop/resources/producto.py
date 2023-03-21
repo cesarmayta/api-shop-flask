@@ -14,7 +14,7 @@ class ProductoResource(Resource):
     
     def get(self):
 
-        data = Producto.query.filter('activo'=='1')
+        data = Producto.get_all()
 
         data_schema = ProductoSchema(many=True)
 
@@ -67,8 +67,7 @@ class ProductoResource(Resource):
     def delete(self,id):
 
         objProducto = Producto.get_by_id(id)
-        objProducto.activo = '0'
-        objProducto.save()
+        objProducto.delete()
 
         data_schema = ProductoSchema()
 
