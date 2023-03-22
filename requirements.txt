@@ -13,3 +13,5 @@ flask-jwt-extended
 mysqlclient
 python-dotenv
 marshmallow-sqlalchemy
+psycopg2
+gunicorn
