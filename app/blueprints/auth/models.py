@@ -20,7 +20,7 @@ class Usuario(db.Model):
         return Usuario.query.get(id)
     
     def save(self):
-        if not self.usuario_id:
+        if not self.id:
             db.session.add(self)
         db.session.commit()
         
