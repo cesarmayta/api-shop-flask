@@ -4,6 +4,9 @@ from .. import auth
 
 from flask_jwt_extended import create_access_token,jwt_required
 
+from ..models import Usuario
+from ..schemas import UsuarioSchema
+
 api = Api(auth)
 
 class UsuarioResource(Resource):
