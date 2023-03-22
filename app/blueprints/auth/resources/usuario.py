@@ -52,23 +52,37 @@ class LoginResource(Resource):
         username = data['username']
         password = data['password']
         
-        objUsuario = Usuario.query.filter_by(username=username)
-        
-        if check_password_hash(objUsuario[0].password,password):
-            payload = {
-                'id': objUsuario[0].id,
-                'username':objUsuario[0].username
-            }
-            access_token = create_access_token(payload)
-        else:
-            access_token = "credenciales no validas"
+        try:
+            objUsuario = Usuario.query.filter_by(username=username).first()
+            print(objUsuario)
+            if objUsuario is not None:
+                if check_password_hash(objUsuario.password,password):
+                    payload = {
+                        'id': objUsuario.id,
+                        'username':objUsuario.username
+                    }
+                    status = True
+                    access_token = create_access_token(payload)
+                else:
+                    status = False
+                    access_token = "credenciales no validas"
+            else:
+                status = False
+                access_token = "usuario no existe"
             
-        context = {
-            'status':True,
-            'content':access_token
-        }
-        
+            context = {
+                'status':status,
+                'content':access_token
+            }
+        except Exception as err:
+            context = {
+                'status':false,
+                'content':str(err)
+            }
+            
         return context
+        
+            
         
         
 api.add_resource(UsuarioResource,'/usuario')

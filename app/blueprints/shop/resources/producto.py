@@ -39,7 +39,7 @@ class UploadImage(Resource):
 
 class ProductoResource(Resource):
     
-    @jwt_required()
+    #@jwt_required()
     def get(self):
 
         data = Producto.get_all()
