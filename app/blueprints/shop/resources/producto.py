@@ -1,8 +1,11 @@
-from flask_restful import Resource,Api,reqparse
-from flask import request
-
 import os
 import werkzeug
+
+from flask_restful import Resource,Api,reqparse
+from flask import request
+from flask_jwt_extended import jwt_required
+
+
 
 from .. import shop
 
@@ -10,10 +13,11 @@ from ..models import Producto
 from ..schemas import ProductoSchema
 
 
+
 api = Api(shop)
 
 class UploadImage(Resource):
-    
+    @jwt_required
     def post(self):
         parse = reqparse.RequestParser()
         parse.add_argument('file',type=werkzeug.datastructures.FileStorage,location='files')
@@ -35,6 +39,7 @@ class UploadImage(Resource):
 
 class ProductoResource(Resource):
     
+    @jwt_required()
     def get(self):
 
         data = Producto.get_all()
@@ -48,6 +53,7 @@ class ProductoResource(Resource):
         
         return context
 
+    @jwt_required()
     def post(self):
         data = request.get_json()
         nombre = data["nombre"]
@@ -66,6 +72,7 @@ class ProductoResource(Resource):
 
         return context
 
+    @jwt_required()
     def put(self,id):
         data = request.get_json()
         nombre = data["nombre"]
@@ -87,6 +94,7 @@ class ProductoResource(Resource):
 
         return context
 
+    @jwt_required()
     def delete(self,id):
 
         objProducto = Producto.get_by_id(id)
